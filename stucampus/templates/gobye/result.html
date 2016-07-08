@@ -5,30 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=0.5">
     <title>Title</title>
     <link rel="stylesheet" href="/static/styles/gobye/result.css">
+    <script src="/static/scripts/gobye/login.js"></script>
+    <script src="/static/scripts/gobye/jquery.min.js"></script>
+    <script src="/static/scripts/gobye/result.js"></script>
 </head>
 <body>
-        <div class="dialog">
-            <h1>你还差 {{lack}} 个 学分</h1>
-            <p></p>
-        </div>
-        <div class="pretty-table">
+<div class="dialog">
+    <h1>你还差 {{lack}} 个 学分</h1>
+    <br>
+    <p><a href="javascript:void(0)" onclick="reset()">重置</a></p>
+</div>
+<div class="pretty-table public-must">
 
-            <table>
-            <caption> 综合必修（公共必修课）</caption>
-                <thead>
-                <tr>
-                    <th>学期号</th>
-                    <th>课程号</th>
-                    <th>课程名</th>
-                    <th>学分</th>
-                    <th>类型1</th>
-                    <th>类型2</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-                <tbody>
+    <table>
+        <caption> 综合必修（公共必修课）</caption>
+        <thead>
+        <tr>
+            <th>学期号</th>
+            <th>课程号</th>
+            <th>课程名</th>
+            <th>学分</th>
+            <th>类型1</th>
+            <th>类型2</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
 
                 {% for x in CourseP %}
+                {% if x.0 != 'XXXXX' %}
                 <tr>
                 
                     <td>{{x.0}}</td>
@@ -37,46 +42,91 @@
                     <td>{{x.3}}</td>
                     <td>{{x.4}}</td>
                     <td>{{x.5}}</td>
-                    <td><a href="#">标记挂科</a> | <a href="#">标记公选</a> | <a href="#">标记双修</a><span
-                            class="check-button"><input name="id" type="checkbox"
-                                                        value="105217"></span></td>
-                </tr>
+            <td><a href="javascript:void(0)" onclick="move_one(this)">标记挂科</a> | <a href="javascript:void(0)"
+                                                                                    onclick="move_one(this)">标记公选</a> |
+                <a
+                        href="javascript:void(0)" onclick="move_one(this)">标记双修</a>
+                <input name="id" type="checkbox"
+                       value="105217"></td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+        <tr>
+            <td colspan="6">
+                综合必修总计：{{creditGet.0}} 分
+            </td>
+            <td>
+                <input type="submit" onclick="move_group(this)" value="批量标记双修">
+            </td>
+        </tr>
 
-                
-                {% endfor %}
-                <tr>
-                    <td colspan="6">
-                        综合必修总计：{{creditGet.0}} 分
-                    </td>
-                    <td>
-                        <input name="act" type="hidden" value="5"><input type="submit" value="批量标记双修">
-                    </td>
-                </tr>
-
-                </tbody>
-            </table>
+        </tbody>
+    </table>
 
 
+</div>
+<div class="pretty-table profession-must">
+    <table>
+        <caption>专业必修（学科专业核心课）</caption>
+        <thead>
 
+        <tr>
+            <th>学期号</th>
+            <th>课程号</th>
+            <th>课程名</th>
+            <th>学分</th>
+            <th>类型1</th>
+            <th>类型2</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
 
-    </div>
-        <div class="pretty-table">
-            <table>
-                <caption>专业必修（学科专业核心课）</caption>
-                <thead>
-                <tr>
-                    <th>学期号</th>
-                    <th>课程号</th>
-                    <th>课程名</th>
-                    <th>学分</th>
-                    <th>类型1</th>
-                    <th>类型2</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for x in CourseM %}
-                {% if x.0 != 'XXXXX'%}
+        {% for x in CourseM %}
+        {% if x.0 != 'XXXXX'%}
+        <tr>
+            <td>{{x.0}}</td>
+            <td>{{x.1}}</td>
+            <td>{{x.2}}</td>
+            <td>{{x.3}}</td>
+            <td>{{x.4}}</td>
+            <td>{{x.5}}</td>
+            <td><a href="javascript:void(0)" onclick="move_one(this)">标记挂科</a> | <a href="javascript:void(0)"
+                                                                                    onclick="move_one(this)">标记公选</a> |
+                <a
+                        href="javascript:void(0)" onclick="move_one(this)">标记双修</a><input name="id" type="checkbox"
+                                                                                          value="105213"></td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+
+        <tr>
+            <td colspan="6">
+                专业必修总计：{{creditGet.2}} 分
+            </td>
+            <td>
+                <input type="submit" onclick="move_group(this)" value="批量标记双修">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="pretty-table profession-select">
+    <table cellpadding="0" cellspacing="0" border="0">
+        <caption>专业选修（学科专业选修课）</caption>
+        <thead>
+        <tr>
+            <th>学期号</th>
+            <th>课程号</th>
+            <th>课程名</th>
+            <th>学分</th>
+            <th>类型1</th>
+            <th>类型2</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+         {% for x in CourseME %}
                 <tr>
                     <td>{{x.0}}</td>
                     <td>{{x.1}}</td>
@@ -88,165 +138,183 @@
                             class="check-button"><input name="id" type="checkbox"
                                                         value="105213"></span></td>
                 </tr>
-                {% endif %}
+        {% endfor %}
+        <tr>
+            <td colspan="6">
+                专业选修总计：{{creditGet.3}} 分
+            </td>
+            <td>
+                <input type="submit" onclick="move_group(this)" value="批量标记公选">
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-                {% endfor %}
+</div>
+<div class="pretty-table public-select">
 
-                <tr>
-                    <td colspan="6">
-                        专业必修总计：{{creditGet.2}} 分
-                    </td>
-                    <td>
-                        <input name="act" type="hidden" value="5"><input type="submit" value="批量标记双修">
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="pretty-table">
-            <table cellpadding="0" cellspacing="0" border="0">
-                <caption>专业选修（学科专业选修课）</caption>
-                <thead>
-                <tr>
-                    <th>学期号</th>
-                    <th>课程号</th>
-                    <th>课程名</th>
-                    <th>学分</th>
-                    <th>类型1</th>
-                    <th>类型2</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-                <tbody>
+    <table cellpadding="0" cellspacing="0" border="0">
+        <caption>公共选修（公共选修课）</caption>
+        <thead>
+        <tr>
+            <th>学期号</th>
+            <th>课程号</th>
+            <th>课程名</th>
+            <th>学分</th>
+            <th>类型1</th>
+            <th>类型2</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
 
-                {% for x in CourseME %}
-                <tr>
+        {% for x in CoursePE %}
+        <tr>
                     <td>{{x.0}}</td>
                     <td>{{x.1}}</td>
                     <td>{{x.2}}</td>
                     <td>{{x.3}}</td>
                     <td>{{x.4}}</td>
                     <td>{{x.5}}</td>
-                    <td><a href="#">标记挂科</a> | <a href="#">标记公选</a> | <a href="#">标记双修</a><span
-                            class="check-button"><input name="id" type="checkbox"
-                                                        value="105213"></span></td>
-                </tr>
-                {% endfor %}
+            <td><a href="javascript:void(0)" onclick="move_one(this)">标记挂科</a> | <a href="javascript:void(0)"
+                                                                                    onclick="move_one(this)">取消标记公选</a><input
+                    name="id" type="checkbox" value="105218">
+            </td>
+        </tr>
+        {% endfor %}
 
-                <tr>
-                    <td colspan="6">
-                        专业选修总计：{{creditGet.3}} 分
-                    </td>
-                    <td>
-                        <input name="act" type="hidden" value="1"><input type="submit" value="批量标记公选">
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+        <tr>
+            <td colspan="6">
+                公共选修总计：{{creditGet.1}} 分【理科学分：分、文科学分：分（其中包含人文学分：分）】
+            </td>
+            <td>
+                <input type="submit" onclick="move_group(this)" value="批量取消标记公选">
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-        </div>
-        <div class="pretty-table">
+</div>
+<div class="pretty-table double">
 
-            <table cellpadding="0" cellspacing="0" border="0">
-                <caption>公共选修（公共选修课）</caption>
-                <thead>
-                <tr>
-                    <th>学期号</th>
-                    <th>课程号</th>
-                    <th>课程名</th>
-                    <th>学分</th>
-                    <th>类型1</th>
-                    <th>类型2</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-                <tbody>
+    <table cellpadding="0" cellspacing="0" border="0">
+        <caption>辅修、双专业、双学位</caption>
+        <thead>
+        <tr>
+            <th>学期号</th>
+            <th>课程号</th>
+            <th>课程名</th>
+            <th>学分</th>
+            <th>类型1</th>
+            <th>类型2</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
 
-                {% for x in CoursePE %}
-                <tr>
-                    <td>{{x.0}}</td>
-                    <td>{{x.1}}</td>
-                    <td>{{x.2}}</td>
-                    <td>{{x.3}}</td>
-                    <td>{{x.4}}</td>
-                    <td>{{x.5}}</td>
-                    <td><a href="#">标记挂科</a> | <a href="#">取消标记公选</a><span class="check-button"><input name="id"
-                                                                                                       type="checkbox"
-                                                                                                       value="105218"></span>
-                    </td>
-                </tr>
-                {% endfor %}
+        <tr>
+            <td colspan="6">
+                双修总计：0 分
+            </td>
+            <td>
+                <input type="submit" onclick="move_group(this)" value="批量取消标记双修">
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-                <tr>
-                    <td colspan="6">
-                        公共选修总计：{{creditGet.1}} 分【理科学分：分、文科学分：分（其中包含人文学分：分）】
-                    </td>
-                    <td>
-                        <input name="act" type="hidden" value="2"><input type="submit" value="批量取消标记公选">
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+</div>
+<div class="pretty-table failed">
 
-        </div>
-        <div class="pretty-table">
+    <table cellpadding="0" cellspacing="0" border="0">
+        <caption>已标记挂科</caption>
+        <thead>
+        <tr>
+            <th>学期号</th>
+            <th>课程号</th>
+            <th>课程名</th>
+            <th>学分</th>
+            <th>类型1</th>
+            <th>类型2</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
 
-            <table cellpadding="0" cellspacing="0" border="0">
-                <caption>辅修、双专业、双学位</caption>
-                <thead>
-                <tr>
-                    <th>学期号</th>
-                    <th>课程号</th>
-                    <th>课程名</th>
-                    <th>学分</th>
-                    <th>类型1</th>
-                    <th>类型2</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-                <tbody>
+        <tr>
+            <td colspan="6">
+                已挂总计：0 分
+            </td>
+            <td>
+                <input type="submit" onclick="move_group(this)" value="批量取消标记挂科">
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-                <tr>
-                    <td colspan="6">
-                        双修总计：0 分
-                    </td>
-                    <td>
-                        <input name="act" type="hidden" value="6"><input type="submit" value="批量取消标记双修">
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+</div>
+<div class="pretty-table remain">
 
-        </div>
-        <div class="pretty-table">
+    <table cellpadding="0" cellspacing="0" border="0">
+        <caption>必修未修课程</caption>
+        <thead>
+        <tr>
+            <th>课程号</th>
+            <th>课程名</th>
+            <th>学分</th>
+            <th>类型1</th>
+            <th>类型2</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for x in CourseP %}
+        {% if x.0 == 'XXXXX'%}
+        <tr>
+            <td>{{x.1}}</td>
+            <td>{{x.2}}</td>
+            <td>{{x.3}}</td>
+            <td>{{x.4}}</td>
+            <td>{{x.5}}</td>
+            <td><a href="javascript:void(0)" onclick="move_one(this)">标记挂科</a> | <a href="javascript:void(0)"
+                                                                                    onclick="move_one(this)">取消标记公选</a><input
+                    name="id"
+                    type="checkbox"
+                    value="105218">
+            </td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+       
+        {% for x in CourseM %}
+        {% if x.0 == 'XXXXX'%}
+        <tr>
+            <td>{{x.1}}</td>
+            <td>{{x.2}}</td>
+            <td>{{x.3}}</td>
+            <td>{{x.4}}</td>
+            <td>{{x.5}}</td>
+            <td><a href="javascript:void(0)" onclick="move_one(this)">标记挂科</a> | <a href="javascript:void(0)"
+                                                                                    onclick="move_one(this)">取消标记公选</a><input
+                    name="id"
+                    type="checkbox"
+                    value="105218">
+            </td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+        <tr>
+            <td colspan="6">
+                未修总计：{{lack}} 分【公共必修:{{creditLack.0}}分,公共选修:{{creditLack.1}}分,专业必修:{{creditLack.2}}分,专业必修:{{creditLack.3}}分】
+            </td>
+            <td>
+                <input type="submit" onclick="move_group(this)" value="批量取消标记公选">
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-            <table cellpadding="0" cellspacing="0" border="0">
-                <caption>已标记挂科</caption>
-                <thead>
-                <tr>
-                    <th>学期号</th>
-                    <th>课程号</th>
-                    <th>课程名</th>
-                    <th>学分</th>
-                    <th>类型1</th>
-                    <th>类型2</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-                <tbody>
-
-                <tr>
-                    <td colspan="6">
-                        已挂总计：0 分
-                    </td>
-                    <td>
-                        <input name="act" type="hidden" value="4"><input type="submit" value="批量取消标记挂科">
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-
-        </div>
+</div>
 
 </body>
 </html>
