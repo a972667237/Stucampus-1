@@ -12,6 +12,7 @@ from stucampus.account.services import account_signup
 from stucampus.account.forms import SignInForm, SignUpForm
 from stucampus.account.forms import ProfileEditForm, PasswordForm
 
+from login_szu.decorator import login_szu
 
 class SignIn(View):
     """Class-base view to handle account sign in request"""
@@ -39,14 +40,18 @@ class SignOut(View):
     def post(self, request):
         logout(request)
         return spec_json(status='success')
-
+    '''use for test for some bug'''
+    def get(self,request):
+        logout(request)
+        return spec_json(status='success')
 
 class SignUp(View):
     '''View of account sign up page.'''
     @method_decorator(guest_or_redirect)
+    @login_szu
     def get(self, request):
         return render(request, 'account/sign-up.html')
-
+    
     @method_decorator(guest_or_redirect)
     def post(self, request):
         form = SignUpForm(request.POST)
