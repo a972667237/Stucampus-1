@@ -32,8 +32,10 @@ class SignIn(View):
         UserActivityLog.objects.create(user=user,
                                        ip_address=get_client_ip(request),
                                        behavior="Login")
-        return spec_json(status='success')
-
+        '''change for sign for szu when sign up'''
+        if request.user.student.job_id and request.user.student.true_name:
+            return spec_json(status='success')
+        return spec_json(status='success',messages='no sign for szu')
 
 class SignOut(View):
     '''View of account sign out page'''
@@ -109,3 +111,13 @@ class Password(View):
         current_user.save()
         return spec_json(status='success')
 
+from django.http import HttpResponseRedirect
+class register_szu(View):
+    '''when some need info is lack the page will change to this'''
+    @method_decorator(login_required)
+    @login_szu
+    def get(self, request):
+        request.user.student.true_name = request.session['szu_name']
+        request.user.student.card_id = request.session['szu_no']
+        request.user.student.save()
+        return HttpResponseRedirect('/manage/index')

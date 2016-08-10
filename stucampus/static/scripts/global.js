@@ -164,7 +164,19 @@
             },
             success: function(response){
                 if (response.status == 'success'){
-                    StuCampus.notice(status_dict[response.status], 2000);
+                    if(response.messages[0]){
+                        StuCampus.notice(response.messages[0], 2000);
+                        function callback(){
+                            document.location.href = "/account/register_szu"
+                            return true;
+                        }
+                    }
+                    else{
+                        StuCampus.notice(status_dict[response.status], 2000);
+                        function callback(){
+                            document.location.href = "/manage/index"
+                        }
+                    }
                     if (callback != ""){
                         callback();
                     }else{
