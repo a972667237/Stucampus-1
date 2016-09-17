@@ -28,10 +28,21 @@
     .item-6 .word {
         font-size: 15px;
     }
+    input,
+    button,
+    select,
+    textarea{
+        font-size: 12px !important;
+    }
 }
 
+.item-5 .container h1{
+    color: black;
+}
 
-
+.item-5 .volunteer{
+    width: 180px;
+}
 
 
 
